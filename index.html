@@ -112,6 +112,7 @@
   <div class="toggle">
     <button id="tab-sign" class="active" onclick="setView('sign')">&#9997;&#65039;  SIGN</button>
     <button id="tab-wall" onclick="setView('wall')">&#128220;  WALL (<span id="wallcount">0</span>)</button>
+    <button id="tab-content" onclick="setView('content')">&#127909;  MY CONTENT</button>
   </div>
 
   <div id="signpanel" class="panel">
@@ -136,8 +137,39 @@
     <div id="walllist"></div>
   </div>
 
+  <style>
+    .cl-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:560px;margin:0 auto;padding:0 16px;}
+    @media(max-width:480px){.cl-grid{grid-template-columns:1fr;}}
+    .cl-card{display:block;text-decoration:none;background:rgba(0,0,0,0.32);border:1.5px solid #C9A84C;border-radius:12px;padding:14px 12px;text-align:center;color:#FDF6E3;transition:transform .15s ease,background .15s ease;}
+    .cl-card:hover{transform:translateY(-2px);background:rgba(201,168,76,0.18);}
+    .cl-card .cl-t{color:#C9A84C;font-weight:bold;font-size:15px;letter-spacing:.5px;}
+    .cl-card .cl-h{display:block;font-size:12px;color:#E8C97A;margin-top:3px;}
+  </style>
+
+  <div id="contentpanel" class="wall hidden">
+    <h3>KC&rsquo;S CONTENT &mdash; WATCH &amp; FOLLOW</h3>
+    <div style="max-width:560px;margin:0 auto 18px;padding:0 16px;">
+      <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border:1.5px solid #C9A84C;border-radius:12px;background:#000;">
+        <iframe title="KC on Twitch" src="https://player.twitch.tv/?channel=kelvzx&parent=youknowkc.com&parent=www.youknowkc.com&parent=youknowkc.vercel.app&muted=true&autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe>
+      </div>
+      <div style="text-align:center;font-size:12px;color:#E8C97A;margin-top:6px;">Live here whenever KC is streaming on Twitch</div>
+    </div>
+    <div class="cl-grid">
+      <a class="cl-card" href="https://www.twitch.tv/kelvzx" target="_blank" rel="noopener"><span class="cl-t">&#127918; Twitch</span><span class="cl-h">kelvzx</span></a>
+      <a class="cl-card" href="https://www.youtube.com/@YouKnowKc" target="_blank" rel="noopener"><span class="cl-t">&#9654;&#65039; YouTube</span><span class="cl-h">@YouKnowKc</span></a>
+      <a class="cl-card" href="https://www.youtube.com/@KelvzxGaming" target="_blank" rel="noopener"><span class="cl-t">&#9654;&#65039; YouTube &mdash; Gaming</span><span class="cl-h">@KelvzxGaming</span></a>
+      <a class="cl-card" href="https://www.tiktok.com/@youknowkcc" target="_blank" rel="noopener"><span class="cl-t">&#127925; TikTok</span><span class="cl-h">@youknowkcc</span></a>
+      <a class="cl-card" href="https://www.tiktok.com/@kelvzxgaming" target="_blank" rel="noopener"><span class="cl-t">&#127925; TikTok &mdash; Gaming</span><span class="cl-h">@kelvzxgaming</span></a>
+    </div>
+  </div>
+
   <div class="footer">
     <div class="tag">DREAM IT. STREAM IT. LIVE IT.</div>
+    <div style="margin-top:10px;font-size:13px;letter-spacing:.5px;">
+      <a href="https://www.twitch.tv/kelvzx" target="_blank" rel="noopener" style="color:#C9A84C;text-decoration:none;margin:0 6px;">Twitch</a>&middot;
+      <a href="https://www.youtube.com/@YouKnowKc" target="_blank" rel="noopener" style="color:#C9A84C;text-decoration:none;margin:0 6px;">YouTube</a>&middot;
+      <a href="https://www.tiktok.com/@youknowkcc" target="_blank" rel="noopener" style="color:#C9A84C;text-decoration:none;margin:0 6px;">TikTok</a>
+    </div>
     <div class="sub">KelvzxGaming · YouKnowKC · Welcome to the next chapter.</div>
   </div>
 
@@ -156,8 +188,10 @@
   function setView(v) {
     document.getElementById('signpanel').classList.toggle('hidden', v !== 'sign');
     document.getElementById('wallpanel').classList.toggle('hidden', v !== 'wall');
+    document.getElementById('contentpanel').classList.toggle('hidden', v !== 'content');
     document.getElementById('tab-sign').classList.toggle('active', v === 'sign');
     document.getElementById('tab-wall').classList.toggle('active', v === 'wall');
+    document.getElementById('tab-content').classList.toggle('active', v === 'content');
   }
 
   function fmtDate(iso) {
