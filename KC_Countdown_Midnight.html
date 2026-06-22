@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KC — Applications Close (Midnight)</title>
+<style>
+  html, body { margin:0; padding:0; height:100%; background:transparent; font-family:Georgia,'Times New Roman',serif; overflow:hidden; }
+  .wrap { width:100%; height:100%; display:flex; align-items:center; justify-content:center; box-sizing:border-box; padding:18px; }
+  .card { text-align:center; padding:clamp(18px,4vw,40px) clamp(22px,6vw,64px); border-radius:22px; border:2px solid #C9A84C;
+    background:linear-gradient(160deg,rgba(26,6,8,0.92) 0%,rgba(74,10,18,0.92) 55%,rgba(107,15,26,0.92) 100%);
+    box-shadow:0 10px 40px rgba(0,0,0,0.55),0 0 0 1px rgba(201,168,76,0.25) inset; color:#FDF6E3; }
+  .pretitle { color:#E8C97A; letter-spacing:4px; font-size:clamp(10px,1.4vw,14px); font-family:'Courier New',monospace; margin-bottom:6px; text-transform:uppercase; }
+  .heading { color:#C9A84C; font-weight:bold; letter-spacing:2px; font-size:clamp(20px,3.4vw,40px); text-shadow:0 3px 12px rgba(0,0,0,0.5); margin:2px 0 4px; }
+  .subhead { font-size:clamp(13px,1.7vw,19px); letter-spacing:1px; color:#FDF6E3; opacity:.95; margin-bottom:clamp(14px,2.4vw,26px); }
+  .timer { display:flex; justify-content:center; align-items:flex-start; gap:clamp(10px,2vw,26px); }
+  .block { min-width:clamp(64px,9vw,120px); }
+  .num { font-size:clamp(44px,8vw,104px); font-weight:bold; line-height:1; color:#C9A84C; text-shadow:0 4px 18px rgba(0,0,0,0.6);
+    font-variant-numeric:tabular-nums; background:rgba(0,0,0,0.28); border:1.5px solid rgba(201,168,76,0.55); border-radius:14px;
+    padding:clamp(8px,1.4vw,16px) clamp(6px,1vw,14px); display:block; }
+  .lab { margin-top:8px; font-size:clamp(10px,1.3vw,15px); letter-spacing:2px; color:#E8C97A; text-transform:uppercase; }
+  .sep { font-size:clamp(40px,7vw,92px); color:#C9A84C; line-height:1.05; font-weight:bold; opacity:.8; align-self:flex-start; padding-top:clamp(6px,1vw,12px); animation:blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity:.25; } }
+  .tagline { margin-top:clamp(14px,2.4vw,26px); font-size:clamp(12px,1.6vw,18px); color:#FDF6E3; opacity:.9; font-style:italic; }
+  .url { margin-top:10px; display:inline-block; font-family:'Courier New',monospace; font-size:clamp(14px,2.1vw,24px); font-weight:bold; letter-spacing:1px;
+    color:#4A0A12; background:linear-gradient(90deg,#C9A84C,#E8C97A); padding:clamp(6px,1vw,11px) clamp(14px,2.4vw,28px); border-radius:30px; box-shadow:0 4px 14px rgba(0,0,0,0.4); }
+  .closed .timer, .closed .subhead { display:none; }
+  .closed-msg { display:none; }
+  .closed .closed-msg { display:block; font-size:clamp(26px,5vw,60px); font-weight:bold; color:#C9A84C; letter-spacing:2px; margin:clamp(10px,2vw,22px) 0; text-shadow:0 3px 12px rgba(0,0,0,0.5); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" id="card">
+      <div class="pretitle">&#9733; Streamer University &middot; Class of 2026 &#9733;</div>
+      <div class="heading">APPLICATIONS CLOSE IN</div>
+      <div class="subhead">Get KC into The Founding 150</div>
+      <div class="timer" id="timer">
+        <div class="block" id="daysBlock"><span class="num" id="days">00</span><div class="lab">Days</div></div>
+        <div class="sep" id="sepD">:</div>
+        <div class="block"><span class="num" id="hours">00</span><div class="lab">Hours</div></div>
+        <div class="sep">:</div>
+        <div class="block"><span class="num" id="mins">00</span><div class="lab">Minutes</div></div>
+        <div class="sep">:</div>
+        <div class="block"><span class="num" id="secs">00</span><div class="lab">Seconds</div></div>
+      </div>
+      <div class="closed-msg">&#9733; APPLICATIONS CLOSED &#9733;</div>
+      <div class="tagline">Sign the petition &amp; watch KC&rsquo;s content:</div>
+      <div class="url">www.youknowkc.com</div>
+    </div>
+  </div>
+<script>
+  // DEADLINE: Midnight tonight = June 22, 2026 at 12:00 AM, your computer's local time. (month is 0-indexed: 5 = June)
+  var target = new Date(2026, 5, 22, 0, 0, 0).getTime();
+  function pad(n){ return (n<10?'0':'')+n; }
+  function tick(){
+    var diff = target - Date.now(), card = document.getElementById('card');
+    if (diff <= 0){ card.classList.add('closed');
+      document.getElementById('days').textContent='00'; document.getElementById('hours').textContent='00';
+      document.getElementById('mins').textContent='00'; document.getElementById('secs').textContent='00'; return; }
+    card.classList.remove('closed');
+    var d=Math.floor(diff/86400000), h=Math.floor((diff%86400000)/3600000), m=Math.floor((diff%3600000)/60000), s=Math.floor((diff%60000)/1000);
+    var showDays = d>0;
+    document.getElementById('daysBlock').style.display = showDays?'':'none';
+    document.getElementById('sepD').style.display = showDays?'':'none';
+    document.getElementById('days').textContent=pad(d); document.getElementById('hours').textContent=pad(h);
+    document.getElementById('mins').textContent=pad(m); document.getElementById('secs').textContent=pad(s);
+  }
+  tick(); setInterval(tick, 1000);
+</script>
+</body>
+</html>
