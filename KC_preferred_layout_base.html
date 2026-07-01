@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>YouKnowKC</title>
+<meta name="description" content="KC — content creator. Gaming sims, real-life vlogs, merch, and verified giveaways." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+/* =========================================================
+   YOUKNOWKC HUB  — single file
+   Two identities on purpose:
+     • Main site (Home + Giveaways)  -> slate + Atlanta coral
+     • Streamer U tab                -> maroon/gold "Founding 150"
+   EDIT POINTS (search "EDIT ME"):
+     #1 ENTRANTS   #2 ARCHIVE   #3 LINKS   #4 SUPABASE (petition)
+   Swap any picture: every placeholder is a real <img> with a
+   data-ph label — just replace its src with your file.
+   ========================================================= */
+:root{
+  /* main-site palette (slate + Atlanta coral) */
+  --ink:#0B0E13;
+  --surface:#11151C;
+  --raised:#171D26;
+  --line:#262F3B;
+  --line-soft:#1E2731;
+  --text:#EDF1F6;
+  --muted:#94A2B2;
+  --coral:#FF6B45;
+  --coral-bright:#FF8261;
+  --peach:#FFC9A8;
+  /* streamer-u palette (kept local to that tab) */
+  --su-maroon:#7A1420;
+  --su-maroon-br:#A81E2E;
+  --su-gold:#E8B84B;
+  --su-gold-soft:#F5D17E;
+  --su-cream:#F4ECDF;
+  --su-ink:#0E0B0C;
+  --shadow:0 22px 60px rgba(0,0,0,.5);
+  --r:16px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);
+  font-family:"Inter",system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+img{display:block;max-width:100%}
+.wrap{width:min(1120px,92vw);margin:0 auto}
+.eyebrow{font-family:"Space Mono";font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--coral)}
+h2.sec{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(26px,4vw,40px);letter-spacing:-.5px;line-height:1.05;margin:8px 0 4px}
+.sec-sub{color:var(--muted);max-width:560px;margin:6px 0 26px}
+
+/* ---------- NAV ---------- */
+header.nav{position:sticky;top:0;z-index:40;background:rgba(11,14,19,.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--line-soft)}
+.nav-inner{display:flex;align-items:center;gap:16px;height:66px}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none}
+.mark{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;
+  background:linear-gradient(150deg,var(--coral),#D8492A);color:#160a06;
+  font-family:"Bricolage Grotesque";font-weight:800;font-size:18px;letter-spacing:-1px}
+.brand b{font-family:"Bricolage Grotesque";font-weight:800;font-size:18px;letter-spacing:-.5px}
+.tabs{margin-left:auto;display:flex;gap:4px;background:var(--surface);border:1px solid var(--line-soft);padding:5px;border-radius:999px}
+.tab{appearance:none;border:0;cursor:pointer;background:transparent;color:var(--muted);
+  font-family:"Inter";font-weight:600;font-size:14px;padding:8px 16px;border-radius:999px;transition:.18s}
+.tab:hover{color:var(--text)}
+.tab[aria-selected="true"]{background:var(--coral);color:#160a06}
+.tab:focus-visible{outline:2px solid var(--coral-bright);outline-offset:2px}
+
+/* ---------- BUTTONS ---------- */
+.btn{appearance:none;border:0;cursor:pointer;font-family:"Inter";font-weight:700;font-size:15px;
+  padding:13px 22px;border-radius:12px;text-decoration:none;display:inline-flex;align-items:center;gap:9px;transition:.18s}
+.btn-pri{background:var(--coral);color:#160a06}
+.btn-pri:hover{background:var(--coral-bright);transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:var(--text);border:1.5px solid var(--line)}
+.btn-ghost:hover{border-color:var(--coral);color:var(--coral)}
+.btn:focus-visible{outline:2px solid var(--coral-bright);outline-offset:2px}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.btn-mini{font-size:13px;padding:9px 14px;border-radius:10px}
+
+/* ---------- IMAGE PLACEHOLDERS ---------- */
+.frame{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--raised);position:relative}
+.frame img{width:100%;height:100%;object-fit:cover}
+.r-portrait{aspect-ratio:4/5}.r-video{aspect-ratio:16/9}.r-square{aspect-ratio:1/1}
+
+/* ---------- VIEWS ---------- */
+.view{display:none;animation:rise .4s ease both}
+.view.active{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+section{padding:56px 0}
+
+/* ---------- HERO ---------- */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center;padding:64px 0 40px}
+.hero h1{font-family:"Bricolage Grotesque";font-weight:800;letter-spacing:-2px;line-height:.95;margin:16px 0 0;
+  font-size:clamp(48px,7.5vw,84px)}
+.hero h1 .em{color:var(--coral)}
+.hero p.lead{color:var(--muted);font-size:17px;max-width:480px;margin:20px 0 28px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px}
+.stat-row{display:flex;gap:28px;margin-top:34px;flex-wrap:wrap}
+.stat .k{font-family:"Bricolage Grotesque";font-weight:800;font-size:22px}
+.stat .l{font-family:"Space Mono";font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.hero-media{position:relative}
+.hero-media .frame{box-shadow:var(--shadow)}
+.live-badge{position:absolute;left:14px;top:14px;z-index:2;display:flex;align-items:center;gap:7px;
+  background:rgba(11,14,19,.78);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:999px;
+  padding:6px 12px;font-family:"Space Mono";font-size:11px;letter-spacing:1px;text-transform:uppercase}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--coral);box-shadow:0 0 0 0 var(--coral);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,107,69,.6)}70%{box-shadow:0 0 0 9px rgba(255,107,69,0)}100%{box-shadow:0 0 0 0 rgba(255,107,69,0)}}
+
+/* ---------- CHANNEL CARDS ---------- */
+.chan-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.chan{background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r);overflow:hidden;text-decoration:none;transition:.2s;display:block}
+.chan:hover{border-color:var(--coral);transform:translateY(-3px);box-shadow:var(--shadow)}
+.chan .body{padding:20px 22px 22px}
+.chan .k{font-family:"Space Mono";font-size:11px;letter-spacing:2px;color:var(--coral);text-transform:uppercase}
+.chan h3{font-family:"Bricolage Grotesque";font-weight:800;font-size:23px;letter-spacing:-.5px;margin:6px 0 6px}
+.chan p{color:var(--muted);font-size:14px;margin:0}
+.chan .go{display:inline-flex;margin-top:14px;color:var(--coral);font-weight:700;font-size:14px}
+
+/* ---------- VIDEO GRID ---------- */
+.vid-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.vid{text-decoration:none;display:block;transition:.2s}
+.vid:hover{transform:translateY(-3px)}
+.vid:hover .frame{border-color:var(--coral)}
+.vid .meta{padding:12px 2px 0}
+.vid h4{margin:0;font-size:15px;font-weight:600;line-height:1.3}
+.vid .sub{color:var(--muted);font-size:12.5px;margin-top:4px;font-family:"Space Mono"}
+.play-glyph{position:absolute;inset:0;display:grid;place-items:center;z-index:2}
+.play-glyph span{width:54px;height:54px;border-radius:50%;background:rgba(11,14,19,.6);border:1px solid rgba(255,255,255,.25);
+  display:grid;place-items:center;color:#fff;font-size:18px;backdrop-filter:blur(4px)}
+
+/* ---------- MERCH ---------- */
+.merch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.merch{background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r);overflow:hidden}
+.merch .meta{padding:14px 16px 16px}
+.merch h4{margin:0;font-size:15px}
+.merch p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.pill{display:inline-block;font-family:"Space Mono";font-size:10px;letter-spacing:1.5px;color:#160a06;background:var(--peach);padding:3px 9px;border-radius:6px;text-transform:uppercase;margin-top:10px}
+
+/* ---------- LINKS ---------- */
+.linkgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.link{background:var(--surface);border:1px solid var(--line-soft);border-radius:13px;padding:15px 18px;text-decoration:none;
+  display:flex;align-items:center;justify-content:space-between;transition:.18s;font-weight:600;font-size:15px}
+.link:hover{border-color:var(--coral);color:var(--coral)}
+.link .arr{color:var(--coral)}
+
+/* ---------- GIVEAWAY ---------- */
+.givewrap{display:grid;grid-template-columns:1.02fr .98fr;gap:34px;align-items:start}
+.prize{background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r);overflow:hidden}
+.prize .body{padding:24px}
+.prize .tag{display:inline-flex;align-items:center;gap:7px;font-family:"Space Mono";font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--coral);border:1px solid var(--line);border-radius:999px;padding:5px 12px}
+.prize h3{font-family:"Bricolage Grotesque";font-weight:800;font-size:27px;letter-spacing:-.5px;margin:14px 0 4px}
+.prize .sub{color:var(--muted);font-size:14px;margin-bottom:18px}
+.howto{list-style:none;padding:0;margin:0}
+.howto li{display:flex;gap:12px;padding:11px 0;border-top:1px solid var(--line-soft);font-size:14px;align-items:flex-start}
+.howto li:first-child{border-top:0}
+.howto .n{font-family:"Bricolage Grotesque";font-weight:800;color:var(--coral);font-size:15px;min-width:20px}
+.howto b{color:var(--peach)}
+.counter{display:flex;align-items:baseline;gap:10px;margin-top:16px}
+.counter .num{font-family:"Bricolage Grotesque";font-weight:800;font-size:44px;color:var(--coral);line-height:1}
+.counter .lab{color:var(--muted);font-size:13px}
+
+.wheel-stage{display:flex;flex-direction:column;align-items:center;gap:18px}
+.wheel-holder{position:relative;width:min(430px,86vw);aspect-ratio:1/1}
+canvas#wheel{width:100%;height:100%;display:block;border-radius:50%;
+  box-shadow:0 0 0 7px var(--raised),0 0 0 9px var(--coral),0 22px 55px rgba(0,0,0,.55)}
+.pointer{position:absolute;top:-5px;left:50%;transform:translateX(-50%);z-index:3;width:0;height:0;
+  border-left:15px solid transparent;border-right:15px solid transparent;border-top:25px solid var(--coral);
+  filter:drop-shadow(0 3px 4px rgba(0,0,0,.6))}
+.hub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;width:72px;height:72px;border-radius:50%;
+  display:grid;place-items:center;background:linear-gradient(150deg,var(--coral),#D8492A);border:3px solid var(--ink);
+  font-family:"Bricolage Grotesque";font-weight:800;color:#160a06;font-size:20px;letter-spacing:-1px}
+.spin-controls{display:flex;flex-direction:column;align-items:center;gap:10px}
+.seedline{font-family:"Space Mono";font-size:12px;color:var(--muted)}
+.seedline b{color:var(--coral)}
+.result{margin-top:4px;width:100%;text-align:center;background:var(--surface);border:1px solid var(--coral);border-radius:14px;padding:18px;display:none}
+.result.show{display:block;animation:rise .4s ease both}
+.result .won{font-family:"Space Mono";font-size:11px;letter-spacing:2px;color:var(--coral);text-transform:uppercase}
+.result .winner{font-family:"Bricolage Grotesque";font-weight:800;font-size:30px;letter-spacing:-.5px;margin:6px 0 2px;word-break:break-word}
+.result .verify{font-size:12px;color:var(--muted);margin-top:8px}
+.result .verify code{font-family:"Space Mono";color:var(--coral)}
+.result .mini-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+
+.archive{display:grid;gap:14px}
+.draw{background:var(--surface);border:1px solid var(--line-soft);border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.draw .info{flex:1;min-width:200px}
+.draw .v{display:inline-flex;align-items:center;gap:6px;font-family:"Space Mono";font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#6FD68C;border:1px solid rgba(111,214,140,.35);border-radius:999px;padding:3px 9px}
+.draw h4{font-family:"Bricolage Grotesque";font-weight:800;font-size:19px;letter-spacing:-.5px;margin:8px 0 3px}
+.draw .meta{color:var(--muted);font-size:13px}
+.draw .meta code,.draw .meta b{font-family:"Space Mono";color:var(--coral)}
+.empty{border:1px dashed var(--line);border-radius:14px;padding:34px;text-align:center;color:var(--muted)}
+.empty b{color:var(--text);display:block;font-family:"Bricolage Grotesque";font-weight:800;font-size:20px;margin-bottom:6px}
+
+/* ---------- STREAMER U (scoped theme) ---------- */
+.su{background:
+    radial-gradient(900px 460px at 50% -10%, rgba(168,30,46,.4), transparent 62%),
+    var(--su-ink);
+  color:var(--su-cream);border:1px solid #3a2a2e;border-radius:22px;padding:42px 34px;margin-top:34px;text-align:center}
+.su-term{font-family:"Space Mono";font-size:12px;letter-spacing:2px;color:var(--su-gold);text-transform:uppercase;
+  border:1px solid #4a2b30;border-radius:999px;padding:6px 14px;display:inline-block}
+.su-crest{width:96px;height:96px;margin:24px auto 6px}
+.su h2{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(30px,6vw,52px);letter-spacing:-1px;margin:14px 0 6px;
+  background:linear-gradient(180deg,var(--su-cream) 40%,var(--su-gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.su .tagline{color:var(--su-gold-soft);font-family:"Space Mono";font-size:14px;letter-spacing:1px}
+.su .pitch{max-width:600px;margin:18px auto 0;color:var(--su-cream);opacity:.92}
+.su-progress{max-width:420px;margin:26px auto 0}
+.su-bar{height:12px;border-radius:999px;background:#2a1a1d;border:1px solid #4a2b30;overflow:hidden}
+.su-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--su-maroon-br),var(--su-gold));width:0;transition:width .6s ease}
+.su-count{font-family:"Space Mono";font-size:13px;color:var(--su-gold);margin-top:10px;letter-spacing:1px}
+.su-form{max-width:420px;margin:26px auto 0;text-align:left}
+.su-field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.su-field label{font-family:"Space Mono";font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--su-gold-soft)}
+.su-field input,.su-field textarea{background:#1a1012;border:1px solid #4a2b30;border-radius:11px;color:var(--su-cream);
+  padding:12px 14px;font-family:"Inter";font-size:14px}
+.su-field input:focus,.su-field textarea:focus{outline:2px solid var(--su-gold);border-color:var(--su-gold)}
+.btn-su{background:var(--su-gold);color:var(--su-ink);width:100%;justify-content:center}
+.btn-su:hover{background:var(--su-gold-soft);transform:translateY(-2px)}
+.su-note{font-family:"Space Mono";font-size:11px;color:#9a8378;margin-top:12px;text-align:center}
+.su-thanks{display:none;color:var(--su-gold);text-align:center;margin-top:12px;font-size:14px}
+.su-thanks.show{display:block}
+.su-wall{max-width:560px;margin:28px auto 0;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.su-name{font-family:"Space Mono";font-size:12px;color:var(--su-cream);background:#1a1012;border:1px solid #3a2a2e;border-radius:999px;padding:5px 11px}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:1px solid var(--line-soft);padding:30px 0 50px;color:var(--muted);font-size:13px;margin-top:30px}
+footer .frow{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;align-items:center}
+footer a{color:var(--coral);text-decoration:none}
+
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:60;display:none}
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--coral);color:#160a06;
+  font-weight:700;font-size:14px;padding:11px 18px;border-radius:11px;opacity:0;transition:.25s;z-index:70;pointer-events:none}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:820px){
+  .hero{grid-template-columns:1fr;gap:30px}
+  .hero-media{order:-1}
+  .chan-grid{grid-template-columns:1fr}
+  .givewrap{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .nav-inner{height:auto;flex-wrap:wrap;padding:10px 0;gap:10px}
+  .tabs{margin-left:0;width:100%;justify-content:space-between}
+  .tab{flex:1;text-align:center;padding:9px 4px}
+}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#home" data-tab="home"><span class="mark">KC</span><b>YouKnowKC</b></a>
+    <div class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab" role="tab" data-tab="home" aria-selected="true">Home</button>
+      <button class="tab" role="tab" data-tab="giveaways" aria-selected="false">Giveaways</button>
+      <button class="tab" role="tab" data-tab="streameru" aria-selected="false">Streamer U</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ================= HOME ================= -->
+  <div class="view active" id="view-home" role="tabpanel">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Content creator</div>
+        <h1>I'm KC.<br>Two channels,<br>one <span class="em">underdog</span> story.</h1>
+        <p class="lead">Football sims where nobodies become legends, plus real-life vlogs off the sticks. New uploads weekly — and giveaways I run live so you see every winner picked for real.</p>
+        <div class="cta-row">
+          <a class="btn btn-pri" id="lnk-yt-primary" href="#" target="_blank" rel="noopener">▶ Watch on YouTube</a>
+          <button class="btn btn-ghost" data-tab="giveaways">🎁 Enter the giveaway</button>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><div class="k">2</div><div class="l">Channels</div></div>
+          <div class="stat"><div class="k">Live</div><div class="l">Giveaways</div></div>
+          <div class="stat"><div class="k">Weekly</div><div class="l">New uploads</div></div>
+        </div>
+      </div>
+      <div class="hero-media">
+        <div class="live-badge"><span class="live-dot"></span>On the road to glory</div>
+        <div class="frame r-portrait"><img data-ph="Hero photo — you at the setup" data-ratio="4:5" alt="KC" /></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">The channels</div>
+      <h2 class="sec">Where to watch</h2>
+      <p class="sec-sub">Two lanes, same energy. Pick your side.</p>
+      <div class="chan-grid">
+        <a class="chan" id="lnk-kelvzx" href="#" target="_blank" rel="noopener">
+          <div class="frame r-video" style="border:0;border-radius:0"><img data-ph="Kelvzx Gaming banner" data-ratio="16:9" alt="Kelvzx Gaming" /></div>
+          <div class="body">
+            <span class="k">Channel 01 · Gaming</span>
+            <h3>Kelvzx Gaming</h3>
+            <p>CFB &amp; Madden career sims built around one thing — taking a long shot all the way to glory.</p>
+            <span class="go">Subscribe →</span>
+          </div>
+        </a>
+        <a class="chan" id="lnk-youknowkc" href="#" target="_blank" rel="noopener">
+          <div class="frame r-video" style="border:0;border-radius:0"><img data-ph="YouKnowKC banner" data-ratio="16:9" alt="YouKnowKC" /></div>
+          <div class="body">
+            <span class="k">Channel 02 · IRL</span>
+            <h3>YouKnowKC</h3>
+            <p>Vlogs and social experiments. The life behind the controller.</p>
+            <span class="go">Subscribe →</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Fresh uploads</div>
+      <h2 class="sec">Latest videos</h2>
+      <p class="sec-sub">Swap these four with your current thumbnails — they link straight to the videos.</p>
+      <div class="vid-grid">
+        <a class="vid" href="#" target="_blank" rel="noopener">
+          <div class="frame r-video"><div class="play-glyph"><span>▶</span></div><img data-ph="Thumbnail 1" data-ratio="16:9" alt="" /></div>
+          <div class="meta"><h4>6'8 TE moved to WR — career sim</h4><div class="sub">Kelvzx Gaming</div></div>
+        </a>
+        <a class="vid" href="#" target="_blank" rel="noopener">
+          <div class="frame r-video"><div class="play-glyph"><span>▶</span></div><img data-ph="Thumbnail 2" data-ratio="16:9" alt="" /></div>
+          <div class="meta"><h4>1-star recruit → Madden legend</h4><div class="sub">Kelvzx Gaming</div></div>
+        </a>
+        <a class="vid" href="#" target="_blank" rel="noopener">
+          <div class="frame r-video"><div class="play-glyph"><span>▶</span></div><img data-ph="Thumbnail 3" data-ratio="16:9" alt="" /></div>
+          <div class="meta"><h4>Day in the life in the A</h4><div class="sub">YouKnowKC</div></div>
+        </a>
+        <a class="vid" href="#" target="_blank" rel="noopener">
+          <div class="frame r-video"><div class="play-glyph"><span>▶</span></div><img data-ph="Thumbnail 4" data-ratio="16:9" alt="" /></div>
+          <div class="meta"><h4>Social experiment — full vid</h4><div class="sub">YouKnowKC</div></div>
+        </a>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Rep the road</div>
+      <h2 class="sec">Merch</h2>
+      <p class="sec-sub">First drop's in the works. These slots are ready for product shots.</p>
+      <div class="merch-grid">
+        <div class="merch"><div class="frame r-square" style="border:0;border-radius:0"><img data-ph="Tee photo" data-ratio="1:1" alt="" /></div><div class="meta"><h4>"Road to Glory" Tee</h4><p>Clean front hit.</p><span class="pill">Dropping soon</span></div></div>
+        <div class="merch"><div class="frame r-square" style="border:0;border-radius:0"><img data-ph="Hoodie photo" data-ratio="1:1" alt="" /></div><div class="meta"><h4>KC Hoodie</h4><p>Heavyweight, embroidered.</p><span class="pill">Dropping soon</span></div></div>
+        <div class="merch"><div class="frame r-square" style="border:0;border-radius:0"><img data-ph="Cap photo" data-ratio="1:1" alt="" /></div><div class="meta"><h4>Underdog Cap</h4><p>Fitted dad-hat.</p><span class="pill">Dropping soon</span></div></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Find me everywhere</div>
+      <h2 class="sec">Links</h2>
+      <div class="linkgrid" id="links-grid"></div>
+    </section>
+  </div>
+
+  <!-- ================= GIVEAWAYS ================= -->
+  <div class="view" id="view-giveaways" role="tabpanel">
+    <section>
+      <div class="eyebrow">Live giveaway</div>
+      <h2 class="sec">Spin the Wheel</h2>
+      <p class="sec-sub">Building momentum into CFB 27. One winner, picked on the wheel — and every draw stays here to replay.</p>
+      <div class="givewrap">
+        <div class="prize">
+          <div class="frame r-video" style="border:0;border-radius:0"><img data-ph="Prize art — CFB 27 cover" data-ratio="16:9" alt="CFB 27" /></div>
+          <div class="body">
+            <span class="tag">🏈 Prize</span>
+            <h3>A copy of CFB 27</h3>
+            <div class="sub">Free to enter. Open while the video's getting engagement.</div>
+            <ul class="howto">
+              <li><span class="n">1</span><span>Comment <b>"road to glory"</b> on the pinned video.</span></li>
+              <li><span class="n">2</span><span>Your @ gets added to the wheel — the list keeps growing.</span></li>
+              <li><span class="n">3</span><span>I spin live. Each draw is saved with a code anyone can replay.</span></li>
+            </ul>
+            <div class="counter"><span class="num" id="entrant-count">0</span><span class="lab">entrants on the wheel right now</span></div>
+          </div>
+        </div>
+
+        <div class="wheel-stage">
+          <div class="wheel-holder">
+            <div class="pointer"></div>
+            <canvas id="wheel" width="800" height="800" aria-label="Giveaway wheel"></canvas>
+            <div class="hub">KC</div>
+          </div>
+          <div class="spin-controls">
+            <button class="btn btn-pri" id="spinBtn">Spin the wheel</button>
+            <div class="seedline">Draw code: <b id="seedDisplay">—</b></div>
+          </div>
+          <div class="result" id="resultCard">
+            <div class="won">Winner</div>
+            <div class="winner" id="winnerName">—</div>
+            <div class="verify">Verified by draw code <code id="resultSeed">—</code> — anyone can replay this exact spin.</div>
+            <div class="mini-row">
+              <button class="btn btn-ghost btn-mini" id="copyLinkBtn">Copy replay link</button>
+              <button class="btn btn-ghost btn-mini" id="copyArchiveBtn">Copy archive entry</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Receipts</div>
+      <h2 class="sec">Past draws — replay any of them</h2>
+      <p class="sec-sub">Every official giveaway lands here. Hit replay and the wheel runs the exact same spin to the exact same winner. No edits, no fakes.</p>
+      <div class="archive" id="archiveList"></div>
+    </section>
+  </div>
+
+  <!-- ================= STREAMER U ================= -->
+  <div class="view" id="view-streameru" role="tabpanel">
+    <section>
+      <div class="su">
+        <span class="su-term">ADMISSIONS_PORT // OPEN · CLASS OF 2026</span>
+        <svg class="su-crest" viewBox="0 0 100 100" aria-label="Streamer University crest">
+          <path d="M50 4 L90 16 V52 C90 76 72 90 50 96 C28 90 10 76 10 52 V16 Z" fill="#7A1420" stroke="#E8B84B" stroke-width="3"/>
+          <path d="M50 14 L80 23 V52 C80 70 66 81 50 86 C34 81 20 70 20 52 V23 Z" fill="none" stroke="#E8B84B" stroke-width="1.5" opacity=".7"/>
+          <text x="50" y="48" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="26" fill="#E8B84B">SU</text>
+          <text x="50" y="68" text-anchor="middle" font-family="Space Mono, monospace" font-size="11" fill="#F5D17E" letter-spacing="2">2026</text>
+        </svg>
+        <h2>The Founding 150</h2>
+        <div class="tagline">Only 150 signatures, ever. Sign your name into the story.</div>
+        <p class="pitch">I'm a 20-year-old creator out of Atlanta grinding two channels around a full-time job. Streamer University is the room I need to be in — and I'd rather earn the seat with my community behind me. Add your name to the founding class.</p>
+
+        <div class="su-progress">
+          <div class="su-bar"><i id="suFill"></i></div>
+          <div class="su-count" id="suCount">— / 150 claimed</div>
+        </div>
+
+        <div class="su-form">
+          <div class="su-field"><label for="suName">Your name</label><input id="suName" type="text" placeholder="First name or @handle" autocomplete="name" /></div>
+          <div class="su-field"><label for="suMsg">Message (optional)</label><textarea id="suMsg" rows="2" placeholder="Why KC belongs at Streamer U"></textarea></div>
+          <button class="btn btn-su" id="signBtn">Claim my spot</button>
+          <div class="su-thanks" id="suThanks">🤝 You're in the founding class. Appreciate you.</div>
+          <div class="su-note" id="suNote"></div>
+        </div>
+
+        <div class="su-wall" id="suWall"></div>
+      </div>
+    </section>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap frow">
+    <div>© <span id="yr"></span> YouKnowKC</div>
+    <div>Built for the <a href="#" data-tab="giveaways">road to glory</a>.</div>
+  </div>
+</footer>
+
+<canvas id="confetti"></canvas>
+<div id="toast"></div>
+
+<script>
+/* =======================================================================
+   EDIT ME #1 — ENTRANTS  (add new "road to glory" commenters)
+   ======================================================================= */
+const ENTRANTS = [
+  "@cqrsoncuh","@3wya","@Tybaileyisnotahoe","@BreysenGlaze-m2b","@Ajwoods-v2v",
+  "@MxsreyFN","@JucoPeyton","@MarcBenjamin-j6w","@CameronBooth-s3n",
+  "@DwayneHarris-z3z", // wrote "Route to glory" — remove if you want strict
+  "@Viralclipd24","@Greendragon936","@alexoman1583","@nicolecain3530","@Jah_on1","@DeeMelton2"
+];
+
+/* =======================================================================
+   EDIT ME #2 — ARCHIVE  (paste a verified draw here after you spin live)
+   ======================================================================= */
+const ARCHIVE = [
+  // { prize:"Copy of CFB 27", date:"2026-06-29", seed:"RTG-XXXXXX", entrants:["@a","@b"], winner:"@b" },
+];
+
+/* =======================================================================
+   EDIT ME #3 — your real links (swap the "#" values)
+   ======================================================================= */
+const LINKS = {
+  kelvzx:"#", youknowkc:"#", tiktok:"#", instagram:"#", discord:"#", twitch:"#"
+};
+
+/* =======================================================================
+   EDIT ME #4 — SUPABASE for the petition (Streamer U tab)
+   Paste your project URL + anon key (anon key is safe to expose in a
+   frontend). Then add this once in <head> for production:
+     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><\/script>
+   Leave as placeholders to run a local demo (preview still works).
+   ======================================================================= */
+const SUPABASE_URL  = "YOUR_PROJECT_URL";   // e.g. https://abcd.supabase.co
+const SUPABASE_KEY  = "YOUR_ANON_KEY";
+const SUPABASE_TABLE= "signatures";          // your table name
+const SIGNATURE_CAP = 150;
+
+/* ===================== nothing below needs editing ===================== */
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+/* ---- placeholder images (swap each <img> src with your file) ---- */
+function phImg(label,ratio){
+  const [rw,rh]=(ratio||'16:9').split(':').map(Number);
+  const w=800,h=Math.round(w*rh/rw);
+  const svg=`<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}'>
+    <defs><pattern id='g' width='40' height='40' patternUnits='userSpaceOnUse'>
+      <path d='M40 0H0V40' fill='none' stroke='#222b36' stroke-width='1'/></pattern></defs>
+    <rect width='100%' height='100%' fill='#141a22'/><rect width='100%' height='100%' fill='url(#g)'/>
+    <circle cx='${w/2}' cy='${h/2-14}' r='22' fill='none' stroke='#FF6B45' stroke-width='2'/>
+    <path d='M${w/2-9} ${h/2-20} h18 v12 h-18 z M${w/2-4} ${h/2-20} l3-4 h2 l3 4' fill='#FF6B45'/>
+    <circle cx='${w/2}' cy='${h/2-13}' r='4' fill='#141a22' stroke='#FF6B45' stroke-width='2'/>
+    <text x='50%' y='${h/2+24}' text-anchor='middle' fill='#7f8c9b' font-family='monospace' font-size='15'>${label}</text>
+    <text x='50%' y='${h/2+44}' text-anchor='middle' fill='#55626f' font-family='monospace' font-size='12'>replace this image</text></svg>`;
+  return 'data:image/svg+xml,'+encodeURIComponent(svg);
+}
+document.querySelectorAll('img[data-ph]').forEach(im=>{
+  im.src=phImg(im.dataset.ph, im.dataset.ratio);
+  if(!im.alt) im.alt=im.dataset.ph;
+});
+
+/* ---- links ---- */
+const setHref=(id,u)=>{const e=document.getElementById(id);if(e)e.href=u;};
+setHref('lnk-yt-primary',LINKS.kelvzx);setHref('lnk-kelvzx',LINKS.kelvzx);setHref('lnk-youknowkc',LINKS.youknowkc);
+const lg=document.getElementById('links-grid');
+[['Kelvzx Gaming',LINKS.kelvzx],['YouKnowKC',LINKS.youknowkc],['TikTok',LINKS.tiktok],['Instagram',LINKS.instagram],['Discord',LINKS.discord],['Twitch',LINKS.twitch]]
+.forEach(([n,u])=>{const a=document.createElement('a');a.className='link';a.href=u;a.target='_blank';a.rel='noopener';a.innerHTML=`${n}<span class="arr">→</span>`;lg.appendChild(a);});
+
+/* ---- tabs ---- */
+const views={home:'view-home',giveaways:'view-giveaways',streameru:'view-streameru'};
+function showTab(name){
+  if(!views[name])name='home';
+  Object.entries(views).forEach(([k,id])=>document.getElementById(id).classList.toggle('active',k===name));
+  document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',t.dataset.tab===name?'true':'false'));
+  try{history.replaceState(null,'',(name==='home'?'#home':'#'+name)+location.search);}catch(e){}
+  window.scrollTo({top:0});
+}
+document.querySelectorAll('[data-tab]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();showTab(el.dataset.tab);}));
+
+/* ---- seeded RNG (deterministic = verifiable) ---- */
+function seedFromString(s){let h=1779033703^s.length;for(let i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),3432918353);h=(h<<13)|(h>>>19);}return(h^(h>>>16))>>>0;}
+function mulberry32(a){return function(){a|=0;a=(a+0x6D2B79F5)|0;let t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};}
+function computeDraw(list,seed){const r=mulberry32(seedFromString(seed));r();r();return{winnerIndex:Math.floor(r()*list.length),turns:6+Math.floor(r()*4)};}
+function newSeed(){return'RTG-'+Math.random().toString(36).slice(2,8).toUpperCase();}
+
+/* ---- wheel ---- */
+const canvas=document.getElementById('wheel'),ctx=canvas.getContext('2d'),SIZE=800,R=SIZE/2;
+const A_COL='#243140',B_COL='#E0613B';
+let currentRotation=0,spinning=false,activeEntrants=ENTRANTS.slice();
+function drawWheel(list,rot,hl=-1){
+  const n=Math.max(list.length,1),seg=(Math.PI*2)/n;
+  ctx.clearRect(0,0,SIZE,SIZE);ctx.save();ctx.translate(R,R);ctx.rotate(rot);
+  for(let i=0;i<n;i++){
+    const a0=i*seg;ctx.beginPath();ctx.moveTo(0,0);ctx.arc(0,0,R-6,a0,a0+seg);ctx.closePath();
+    ctx.fillStyle=(i===hl)?'#FFC9A8':(i%2?A_COL:B_COL);ctx.fill();
+    ctx.save();ctx.rotate(a0+seg/2);ctx.textAlign='right';
+    ctx.fillStyle=(i===hl)?'#3a1a0c':((i%2)?'#EDF1F6':'#1a1109');
+    let fs=Math.max(11,Math.min(26,360/n));ctx.font=`700 ${fs}px Inter, sans-serif`;
+    let lab=list[i]||'';const mx=n>20?14:18;if(lab.length>mx)lab=lab.slice(0,mx-1)+'…';
+    ctx.fillText(lab,R-26,fs*0.34);ctx.restore();
+  }
+  ctx.restore();
+}
+const easeOut=t=>1-Math.pow(1-t,3);
+function animateTo(list,wi,turns,onDone){
+  const n=list.length,seg=(Math.PI*2)/n,target=turns*Math.PI*2+(-Math.PI/2-(wi*seg+seg/2));
+  let start=currentRotation%(Math.PI*2);if(start>0)start-=Math.PI*2;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){currentRotation=target;drawWheel(list,target,wi);onDone&&onDone();return;}
+  const dur=5200,t0=performance.now();
+  (function frame(now){const p=Math.min((now-t0)/dur,1);currentRotation=start+(target-start)*easeOut(p);
+    drawWheel(list,currentRotation,p>=1?wi:-1);p<1?requestAnimationFrame(frame):onDone&&onDone();})(t0);
+}
+function refreshEntrants(){activeEntrants=ENTRANTS.slice();document.getElementById('entrant-count').textContent=activeEntrants.length;drawWheel(activeEntrants,currentRotation);}
+
+const spinBtn=document.getElementById('spinBtn'),seedDisplay=document.getElementById('seedDisplay'),
+resultCard=document.getElementById('resultCard'),winnerName=document.getElementById('winnerName'),resultSeed=document.getElementById('resultSeed');
+let lastDraw=null;
+spinBtn.addEventListener('click',()=>{
+  if(spinning||!activeEntrants.length)return;spinning=true;spinBtn.disabled=true;resultCard.classList.remove('show');
+  const seed=newSeed();seedDisplay.textContent=seed;const{winnerIndex,turns}=computeDraw(activeEntrants,seed);
+  animateTo(activeEntrants,winnerIndex,turns,()=>{spinning=false;spinBtn.disabled=false;
+    const w=activeEntrants[winnerIndex];winnerName.textContent=w;resultSeed.textContent=seed;resultCard.classList.add('show');
+    lastDraw={prize:"Copy of CFB 27",date:new Date().toISOString().slice(0,10),seed,entrants:activeEntrants.slice(),winner:w};burst();});
+});
+function replayDraw(d){
+  showTab('giveaways');if(spinning)return;spinning=true;spinBtn.disabled=true;resultCard.classList.remove('show');
+  seedDisplay.textContent=d.seed;const{winnerIndex,turns}=computeDraw(d.entrants,d.seed);currentRotation=0;drawWheel(d.entrants,0);
+  animateTo(d.entrants,winnerIndex,turns,()=>{spinning=false;spinBtn.disabled=false;
+    winnerName.textContent=d.entrants[winnerIndex];resultSeed.textContent=d.seed;resultCard.classList.add('show');lastDraw=d;burst();
+    setTimeout(()=>{if(!spinning){currentRotation=0;refreshEntrants();}},4000);});
+}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
+async function copy(t){try{await navigator.clipboard.writeText(t);}catch(e){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();}}
+document.getElementById('copyLinkBtn').addEventListener('click',()=>{if(!lastDraw)return;copy(location.origin+location.pathname+'?replay='+encodeURIComponent(lastDraw.seed)+'#giveaways');toast('Replay link copied');});
+document.getElementById('copyArchiveBtn').addEventListener('click',()=>{if(!lastDraw)return;
+  copy(`  { prize:${JSON.stringify(lastDraw.prize)}, date:${JSON.stringify(lastDraw.date)}, seed:${JSON.stringify(lastDraw.seed)}, entrants:${JSON.stringify(lastDraw.entrants)}, winner:${JSON.stringify(lastDraw.winner)} },`);
+  toast('Archive entry copied — paste into ARCHIVE');});
+
+function renderArchive(){
+  const list=document.getElementById('archiveList');list.innerHTML='';
+  if(!ARCHIVE.length){list.innerHTML='<div class="empty"><b>No draws yet</b>The first verified giveaway shows up here once it\'s spun — replay link and receipts included.</div>';return;}
+  ARCHIVE.slice().reverse().forEach(d=>{
+    const el=document.createElement('div');el.className='draw';
+    el.innerHTML=`<div class="info"><span class="v">✓ Verified draw</span><h4>${d.prize}</h4>
+      <div class="meta">${d.date} · Winner: <b>${d.winner}</b> · ${d.entrants.length} entrants · code <code>${d.seed}</code></div></div>`;
+    const b=document.createElement('button');b.className='btn btn-ghost btn-mini';b.textContent='▶ Replay this spin';b.addEventListener('click',()=>replayDraw(d));
+    el.appendChild(b);list.appendChild(el);
+  });
+}
+
+/* ---- confetti (coral/peach) ---- */
+const cc=document.getElementById('confetti'),cx=cc.getContext('2d');let parts=[];
+function sizeCC(){cc.width=innerWidth;cc.height=innerHeight;}addEventListener('resize',sizeCC);sizeCC();
+function burst(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;cc.style.display='block';parts=[];
+  const cols=['#FF6B45','#FFC9A8','#FF8261','#EDF1F6'];
+  for(let i=0;i<140;i++)parts.push({x:innerWidth/2,y:innerHeight*0.32,vx:(Math.random()-.5)*14,vy:Math.random()*-12-4,g:.4+Math.random()*.3,s:5+Math.random()*7,c:cols[i%cols.length],r:Math.random()*6,vr:(Math.random()-.5)*.4});
+  requestAnimationFrame(step);}
+function step(){cx.clearRect(0,0,cc.width,cc.height);let alive=false;
+  parts.forEach(p=>{p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;if(p.y<cc.height+30)alive=true;cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);cx.restore();});
+  alive?requestAnimationFrame(step):cc.style.display='none';}
+
+/* ---- STREAMER U petition (Supabase-backed, local fallback) ---- */
+let sb=null, suLocal=[], suBase=0;
+const liveSupabase = SUPABASE_URL.startsWith('http') && window.supabase;
+if(liveSupabase){ try{ sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY); }catch(e){ sb=null; } }
+
+const suFill=document.getElementById('suFill'),suCountEl=document.getElementById('suCount'),
+suWall=document.getElementById('suWall'),suNote=document.getElementById('suNote'),signBtn=document.getElementById('signBtn');
+
+function renderSU(total,names){
+  const pct=Math.min(100,Math.round(total/SIGNATURE_CAP*100));
+  suFill.style.width=pct+'%';
+  suCountEl.textContent=`${total} / ${SIGNATURE_CAP} claimed`;
+  suWall.innerHTML='';(names||[]).slice(-24).forEach(n=>{const s=document.createElement('span');s.className='su-name';s.textContent=n;suWall.appendChild(s);});
+  if(total>=SIGNATURE_CAP){signBtn.disabled=true;signBtn.textContent='Founding class is full';}
+}
+async function loadSU(){
+  if(sb){
+    try{
+      const{count}=await sb.from(SUPABASE_TABLE).select('*',{count:'exact',head:true});
+      const{data}=await sb.from(SUPABASE_TABLE).select('name').order('created_at',{ascending:true}).limit(24);
+      suBase=count||0; renderSU(suBase,(data||[]).map(r=>r.name)); suNote.textContent='// live · connected to Supabase';
+      return;
+    }catch(e){ suNote.textContent='// supabase error — running local demo'; }
+  } else {
+    suNote.textContent='// demo mode · add your Supabase URL + anon key in EDIT ME #4 to go live';
+  }
+  suBase=137; renderSU(suBase,[]); // demo baseline
+}
+signBtn.addEventListener('click',async()=>{
+  const name=document.getElementById('suName').value.trim();
+  const message=document.getElementById('suMsg').value.trim();
+  if(!name){document.getElementById('suName').focus();toast('Add your name first');return;}
+  signBtn.disabled=true;
+  if(sb){
+    try{ await sb.from(SUPABASE_TABLE).insert({name,message}); }
+    catch(e){ toast('Could not save — try again'); signBtn.disabled=false; return; }
+    await loadSU();
+  } else {
+    suLocal.push(name); renderSU(suBase+suLocal.length, suLocal);
+  }
+  document.getElementById('suThanks').classList.add('show');
+  document.getElementById('suName').value='';document.getElementById('suMsg').value='';
+  if(!signBtn.textContent.includes('full')) signBtn.disabled=false;
+});
+
+/* ---- boot ---- */
+(function boot(){
+  refreshEntrants();renderArchive();loadSU();
+  const h=(location.hash||'').replace('#','');showTab(views[h]?h:'home');
+  const rs=new URLSearchParams(location.search).get('replay');
+  if(rs){const d=ARCHIVE.find(x=>x.seed===rs);if(d)setTimeout(()=>replayDraw(d),350);else showTab('giveaways');}
+})();
+</script>
+</body>
+</html>
