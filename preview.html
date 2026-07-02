@@ -289,7 +289,7 @@ footer a{color:var(--coral);text-decoration:none}
       <p class="sec-sub">Two lanes, same energy. Pick your side.</p>
       <div class="chan-grid">
         <a class="chan" id="lnk-kelvzx" href="#" target="_blank" rel="noopener">
-          <div class="frame r-video" style="border:0;border-radius:0"><img data-ratio="16:9" alt="Kelvzx Gaming" src="https://yt3.googleusercontent.com/tB6buH5QazUl5vChojscyCOa4oZKv6wrXXTVq2wvlBCuZyl-ua3FaeJGygSnAWBmxs6iXabErQ=w1060-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div>
+          <div class="frame r-video" style="border:0;border-radius:0"><img data-ratio="16:9" alt="Kelvzx Gaming" src="https://yt3.googleusercontent.com/uExjLCGNAgJQ1zGj_RoRDlT3h8YGs2poLRauOyj3GrMu1nFVTlgfYwls42H2n7oWFDZ7foGh14o=s900-c-k-c0x00ffffff-no-rj" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div>
           <div class="body">
             <span class="k">Channel 01 · Gaming</span>
             <h3>Kelvzx Gaming</h3>
@@ -433,12 +433,7 @@ footer a{color:var(--coral);text-decoration:none}
 /* =======================================================================
    EDIT ME #1 — ENTRANTS  (add new "road to glory" commenters)
    ======================================================================= */
-const ENTRANTS = [
-  "@cqrsoncuh","@3wya","@Tybaileyisnotahoe","@BreysenGlaze-m2b","@Ajwoods-v2v",
-  "@MxsreyFN","@JucoPeyton","@MarcBenjamin-j6w","@CameronBooth-s3n",
-  "@DwayneHarris-z3z", // wrote "Route to glory" — remove if you want strict
-  "@Viralclipd24","@Greendragon936","@alexoman1583","@nicolecain3530","@Jah_on1","@DeeMelton2"
-];
+const ENTRANTS = ["@Unk0wn_us3rs","@whodatnation9442","@kamsiokwara2936","@TherealLaylaLaShaun","@Footballplayers9","@jayfuiorus4108","@CameronBooth-s3n","@DeeMelton2","@Greendragon936","@Jah_on1","@DwayneHarris-z3z","@nicolecain3530","@alexoman1583","@Ajwoods-v2v","@Viralclipd24","@MxsreyFN","@Speedy19-smith","@MalcomHardy-s9j","@JucoPeyton","@MarcBenjamin-j6w","@cgrsoncuh","@3wya","@Tybaileyisnotahoe","@BreysenGlaze-m2b","@Bankroll0750"];
 
 /* =======================================================================
    EDIT ME #2 — ARCHIVE  (paste a verified draw here after you spin live)
@@ -450,7 +445,7 @@ const ARCHIVE = [
 /* =======================================================================
    EDIT ME #3 — your real links (swap the "#" values)
    ======================================================================= */
-const LINKS = {kelvzx:"https://www.youtube.com/@KelvzxGaming",youknowkc:"https://www.youtube.com/@YouKnowKc",twitch:"https://www.twitch.tv/kelvzx",tiktok:"https://www.tiktok.com/@youknowkcc",tiktokgaming:"https://www.tiktok.com/@kelvzxgaming"};
+const LINKS = {kelvzx:"https://www.youtube.com/@KelvzxGaming", youknowkc:"https://www.youtube.com/@YouKnowKc", tiktok:"https://www.tiktok.com/@youknowkcc", instagram:"https://www.instagram.com/youknowkc._/", discord:"#", twitch:"https://www.twitch.tv/kelvzx"};
 
 /* =======================================================================
    EDIT ME #4 — SUPABASE for the petition (Streamer U tab)
@@ -539,6 +534,7 @@ function animateTo(list,wi,turns,onDone){
     drawWheel(list,currentRotation,p>=1?wi:-1);p<1?requestAnimationFrame(frame):onDone&&onDone();})(t0);
 }
 function refreshEntrants(){activeEntrants=ENTRANTS.slice();document.getElementById('entrant-count').textContent=activeEntrants.length;drawWheel(activeEntrants,currentRotation);}
+(function __idle(){if(!spinning){currentRotation+=0.0032;drawWheel(activeEntrants,currentRotation);}requestAnimationFrame(__idle);})();
 
 const spinBtn=document.getElementById('spinBtn'),seedDisplay=document.getElementById('seedDisplay'),
 resultCard=document.getElementById('resultCard'),winnerName=document.getElementById('winnerName'),resultSeed=document.getElementById('resultSeed');
